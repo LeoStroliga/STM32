@@ -1,7 +1,36 @@
-{
+/*{
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "vector.h": "c",
-        "rcc.h": "c"
+        "rcc.h": "c",
+        "system.h": "c"
     }
+}*/
+{
+    
+    "C_Cpp.errorSquiggles": "disabled",
+
+   
+    "files.associations": {
+        "vector.h": "c",
+        "rcc.h": "c",
+        "system.h": "c",
+        "usart.h": "c",
+        "uart.h": "c",
+        "usbd.h": "c"
+    },
+
+    
+    "C_Cpp.default.compilerPath": "C:/Program Files (x86)/Arm GNU Toolchain/arm-none-eabi/bin/arm-none-eabi-gcc.exe",
+
+    
+    "C_Cpp.intelliSenseMode": "gcc-arm",
+
+  
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/app/inc",
+        "${workspaceFolder}/shared/inc",
+        "${workspaceFolder}/libopencm3/include",
+        "${workspaceFolder}/libopencm3/include/libopencm3"
+    ]
 }

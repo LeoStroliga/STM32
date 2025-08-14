@@ -2,45 +2,27 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/cm3/scb.h>
-#include "core/system.h"
 #include <libopencm3/usb/usbd.h>
 #include <libopencm3/usb/cdc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/usart.h>
 
+#include "core/system.h"
+#include "core/uart.h"
+
 
 #define BOOTLOADER_SIZE (0x8000U)
-
-
-void usart_setup(void) {
-    // Enable clocks
-    rcc_periph_clock_enable(RCC_GPIOA);
-    rcc_periph_clock_enable(RCC_USART2);
-
-    // Setup GPIO pins for USART2 TX (PA2) and RX (PA3)
-    gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO2 | GPIO3);
-    gpio_set_af(GPIOA, GPIO_AF7, GPIO2 | GPIO3);
-
-    // Setup USART
-    usart_set_baudrate(USART2, 115200);
-    usart_set_mode(USART2, USART_MODE_TX_RX);
-    usart_set_databits(USART2, 8);
-    usart_set_stopbits(USART2, USART_STOPBITS_1);
-    usart_set_parity(USART2, USART_PARITY_NONE);
-    usart_set_flow_control(USART2, USART_FLOWCONTROL_NONE);
-    usart_enable(USART2);
-}
-
-void usart_send_string(const char *str) {
-    while (*str) {
-        usart_send_blocking(USART2, *str++);
-    }
-}
+#define UART_PORT       (GPIOA)
+#define RX_PIN          (GPIO3)
+#define TX_PIN          (GPIO2)
 
 
 static void gpio_setup(void){  
     rcc_periph_clock_enable(RCC_GPIOC);
-   gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO13);
+    gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO13);
+
+    gpio_mode_setup(UART_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, TX_PIN|RX_PIN);
+    gpio_set_af(UART_PORT, GPIO_AF7, TX_PIN|RX_PIN);
 }
 
 
@@ -51,9 +33,10 @@ int main(void)
     system_setup();
     gpio_setup();
     gpio_set(GPIOC, GPIO13);
+    uart_setup();
   
 
-  
+ 
     uint64_t start_time = system_get_ticks();
     
   
@@ -65,6 +48,12 @@ int main(void)
         {
         gpio_toggle(GPIOC, GPIO13);
         start_time=system_get_ticks();
+        }
+
+        if(uart_data_available()){
+            uint8_t data = uart_read_byte();
+            uart_write_byte(data+1);
+        
         }
 
     }
