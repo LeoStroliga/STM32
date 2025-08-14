@@ -7,13 +7,13 @@ Archive member included to satisfy reference by file (symbol)
 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
                               src/main.o (rcc_periph_clock_enable)
 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
-                              src/core/system.o (rcc_clock_setup_pll)
+                              ../shared/src/core/system.o (rcc_clock_setup_pll)
 ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_all.o)
                               src/main.o (usart_set_baudrate)
 ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_f124.o)
                               ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_all.o) (usart_send)
 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
-                              src/core/system.o (systick_set_frequency)
+                              ../shared/src/core/system.o (systick_set_frequency)
 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
                               ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o) (flash_set_ws)
 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
@@ -23,9 +23,9 @@ Archive member included to satisfy reference by file (symbol)
 
 Discarded input sections
 
- .data          0x00000000        0x0 src/core/system.o
  .data          0x00000000        0x0 src/main.o
  .bss           0x00000000        0x0 src/main.o
+ .data          0x00000000        0x0 ../shared/src/core/system.o
  .text          0x00000000        0x0 src/bootloader.o
  .data          0x00000000        0x0 src/bootloader.o
  .bss           0x00000000        0x0 src/bootloader.o
@@ -511,8 +511,8 @@ ram              0x20000000         0x00018000         xrw
 
 Linker script and memory map
 
-LOAD src/core/system.o
 LOAD src/main.o
+LOAD ../shared/src/core/system.o
 LOAD src/bootloader.o
 LOAD startup.o
 LOAD ../libopencm3/lib\libopencm3_stm32f4.a
@@ -532,14 +532,14 @@ END GROUP
  *(.firmware_info)
  *(.firmware_signature)
  *(.text*)
- .text          0x08008040       0x84 src/core/system.o
-                0x08008040                sys_tick_handler
-                0x08008098                system_get_ticks
-                0x080080b4                system_setup
- .text          0x080080c4      0x118 src/main.o
-                0x080080c4                usart_setup
-                0x08008134                usart_send_string
-                0x08008188                main
+ .text          0x08008040      0x118 src/main.o
+                0x08008040                usart_setup
+                0x080080b0                usart_send_string
+                0x08008104                main
+ .text          0x08008158       0x84 ../shared/src/core/system.o
+                0x08008158                sys_tick_handler
+                0x080081b0                system_get_ticks
+                0x080081cc                system_setup
  .text          0x080081dc       0x64 startup.o
                 0x080081dc                Default_Handler
                 0x080081e4                Reset_Handler
@@ -674,10 +674,10 @@ END GROUP
  .v4_bx         0x08008828        0x0 linker stubs
 
 .iplt           0x08008828        0x0
- .iplt          0x08008828        0x0 src/core/system.o
+ .iplt          0x08008828        0x0 src/main.o
 
 .rel.dyn        0x08008828        0x0
- .rel.iplt      0x08008828        0x0 src/core/system.o
+ .rel.iplt      0x08008828        0x0 src/main.o
 
 .preinit_array  0x08008828        0x0
                 0x08008828                        . = ALIGN (0x4)
@@ -731,12 +731,12 @@ END GROUP
                 0x08008828                        _data_loadaddr = LOADADDR (.data)
 
 .igot.plt       0x2000000c        0x0 load address 0x08008834
- .igot.plt      0x2000000c        0x0 src/core/system.o
+ .igot.plt      0x2000000c        0x0 src/main.o
 
 .bss            0x20000010        0x8 load address 0x08008834
                 0x20000010                        _sbss = .
  *(.bss*)
- .bss           0x20000010        0x8 src/core/system.o
+ .bss           0x20000010        0x8 ../shared/src/core/system.o
  *(COMMON)
                 0x20000018                        . = ALIGN (0x4)
                 0x20000018                        _ebss = .
@@ -750,8 +750,8 @@ OUTPUT(app.elf elf32-littlearm)
 LOAD linker stubs
 
 .debug_info     0x00000000     0x3572
- .debug_info    0x00000000      0x2c8 src/core/system.o
- .debug_info    0x000002c8      0x6d4 src/main.o
+ .debug_info    0x00000000      0x6d4 src/main.o
+ .debug_info    0x000006d4      0x2c8 ../shared/src/core/system.o
  .debug_info    0x0000099c      0x14f startup.o
  .debug_info    0x00000aeb      0x256 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
  .debug_info    0x00000d41      0x21b ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
@@ -765,8 +765,8 @@ LOAD linker stubs
  .debug_info    0x0000348f       0xe3 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
 
 .debug_abbrev   0x00000000      0xf37
- .debug_abbrev  0x00000000      0x18a src/core/system.o
- .debug_abbrev  0x0000018a      0x14d src/main.o
+ .debug_abbrev  0x00000000      0x14d src/main.o
+ .debug_abbrev  0x0000014d      0x18a ../shared/src/core/system.o
  .debug_abbrev  0x000002d7       0xfa startup.o
  .debug_abbrev  0x000003d1      0x115 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
  .debug_abbrev  0x000004e6       0xc2 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
@@ -781,9 +781,9 @@ LOAD linker stubs
 
 .debug_aranges  0x00000000      0x4b8
  .debug_aranges
-                0x00000000       0x20 src/core/system.o
+                0x00000000       0x20 src/main.o
  .debug_aranges
-                0x00000020       0x20 src/main.o
+                0x00000020       0x20 ../shared/src/core/system.o
  .debug_aranges
                 0x00000040       0x20 startup.o
  .debug_aranges
@@ -807,25 +807,25 @@ LOAD linker stubs
  .debug_aranges
                 0x00000498       0x20 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
 
-.debug_line     0x00000000     0x399c
- .debug_line    0x00000000      0x1b9 src/core/system.o
- .debug_line    0x000001b9      0x234 src/main.o
- .debug_line    0x000003ed      0x143 startup.o
- .debug_line    0x00000530      0x450 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
- .debug_line    0x00000980      0x526 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
- .debug_line    0x00000ea6      0x4ee ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
- .debug_line    0x00001394      0xb5a ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
- .debug_line    0x00001eee      0x72a ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_all.o)
- .debug_line    0x00002618      0x446 ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_f124.o)
- .debug_line    0x00002a5e      0x418 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
- .debug_line    0x00002e76      0x3f0 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
- .debug_line    0x00003266      0x409 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
- .debug_line    0x0000366f      0x32d ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
+.debug_line     0x00000000     0x39a6
+ .debug_line    0x00000000      0x23e src/main.o
+ .debug_line    0x0000023e      0x1b9 ../shared/src/core/system.o
+ .debug_line    0x000003f7      0x143 startup.o
+ .debug_line    0x0000053a      0x450 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
+ .debug_line    0x0000098a      0x526 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
+ .debug_line    0x00000eb0      0x4ee ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
+ .debug_line    0x0000139e      0xb5a ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
+ .debug_line    0x00001ef8      0x72a ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_all.o)
+ .debug_line    0x00002622      0x446 ../libopencm3/lib\libopencm3_stm32f4.a(usart_common_f124.o)
+ .debug_line    0x00002a68      0x418 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
+ .debug_line    0x00002e80      0x3f0 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
+ .debug_line    0x00003270      0x409 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
+ .debug_line    0x00003679      0x32d ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
 
 .debug_str      0x00000000     0xd527
- .debug_str     0x00000000     0xd527 src/core/system.o
-                                0x35e (size before relaxing)
- .debug_str     0x0000d527      0x891 src/main.o
+ .debug_str     0x00000000     0xd527 src/main.o
+                                0x891 (size before relaxing)
+ .debug_str     0x0000d527      0x35e ../shared/src/core/system.o
  .debug_str     0x0000d527      0x1a2 startup.o
  .debug_str     0x0000d527     0x6701 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
  .debug_str     0x0000d527     0x6723 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
@@ -839,9 +839,9 @@ LOAD linker stubs
  .debug_str     0x0000d527     0x56d4 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
 
 .comment        0x00000000       0x45
- .comment       0x00000000       0x45 src/core/system.o
+ .comment       0x00000000       0x45 src/main.o
                                  0x46 (size before relaxing)
- .comment       0x00000045       0x46 src/main.o
+ .comment       0x00000045       0x46 ../shared/src/core/system.o
  .comment       0x00000045       0x46 startup.o
  .comment       0x00000045       0x46 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
  .comment       0x00000045       0x46 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)
@@ -857,9 +857,9 @@ LOAD linker stubs
 .ARM.attributes
                 0x00000000       0x32
  .ARM.attributes
-                0x00000000       0x34 src/core/system.o
+                0x00000000       0x34 src/main.o
  .ARM.attributes
-                0x00000034       0x34 src/main.o
+                0x00000034       0x34 ../shared/src/core/system.o
  .ARM.attributes
                 0x00000068       0x34 startup.o
  .ARM.attributes
@@ -884,8 +884,8 @@ LOAD linker stubs
                 0x00000270       0x34 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
 
 .debug_frame    0x00000000      0x984
- .debug_frame   0x00000000       0xa4 src/core/system.o
- .debug_frame   0x000000a4       0x90 src/main.o
+ .debug_frame   0x00000000       0x90 src/main.o
+ .debug_frame   0x00000090       0xa4 ../shared/src/core/system.o
  .debug_frame   0x00000134       0x48 startup.o
  .debug_frame   0x0000017c       0x80 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_all.o)
  .debug_frame   0x000001fc       0x70 ../libopencm3/lib\libopencm3_stm32f4.a(gpio_common_f0234.o)

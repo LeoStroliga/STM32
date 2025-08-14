@@ -11,10 +11,14 @@ BIN    = $(PROJECT).bin
 # Source folders
 SRCDIR = src
 INCDIR = inc
+SHARED_SRCDIR = ../shared/src
+SHARED_INCDIR = ../shared/inc
 
 # Find all .c and .S source files
-C_SRCS = $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c)
-S_SRCS = $(wildcard $(SRCDIR)/**/*.S) $(wildcard $(SRCDIR)/*.S)
+C_SRCS = $(wildcard $(SRCDIR)/**/*.c) $(wildcard $(SRCDIR)/*.c) \
+$(wildcard $(SHARED_SRCDIR)/**/*.c) $(wildcard $(SHARED_SRCDIR)/*.c)
+S_SRCS = $(wildcard $(SRCDIR)/**/*.S) $(wildcard $(SRCDIR)/*.S) \
+$(wildcard $(SHARED_SRCDIR)/**/*.S) $(wildcard $(SHARED_SRCDIR)/*.S)
 STARTUP = startup.c
 SRC = $(C_SRCS) $(S_SRCS) $(STARTUP)
 OBJS = $(SRC:.c=.o)
@@ -24,9 +28,12 @@ OBJS := $(OBJS:.S=.o)
 CC = arm-none-eabi-gcc
 AS = arm-none-eabi-gcc
 CFLAGS = -g -O0 -Wall -Wextra \
-         -I$(OPENCM3_DIR)/include -I$(INCDIR) -I$(INCDIR)/core \
+         -I$(OPENCM3_DIR)/include \
+         -I$(INCDIR) -I$(INCDIR)/core \
+         -I$(SHARED_INCDIR) -I$(SHARED_INCDIR)/core \
          -mcpu=cortex-m4 -mthumb -nostdlib -MD -MP \
-         -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4 -Isrc/core
+         -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4 \
+         -Isrc/core
 
 # Linker & flags
 

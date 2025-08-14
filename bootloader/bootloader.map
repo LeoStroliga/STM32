@@ -1,9 +1,9 @@
 Archive member included to satisfy reference by file (symbol)
 
 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
-                              src/core/system.o (rcc_clock_setup_pll)
+                              ../shared/src/core/system.o (rcc_clock_setup_pll)
 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
-                              src/core/system.o (systick_set_frequency)
+                              ../shared/src/core/system.o (systick_set_frequency)
 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
                               ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o) (flash_set_ws)
 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
@@ -15,9 +15,9 @@ Archive member included to satisfy reference by file (symbol)
 
 Discarded input sections
 
- .data          0x00000000        0x0 src/core/system.o
  .data          0x00000000        0x0 src/bootloader.o
  .bss           0x00000000        0x0 src/bootloader.o
+ .data          0x00000000        0x0 ../shared/src/core/system.o
  .data          0x00000000        0x0 startup.o
  .bss           0x00000000        0x0 startup.o
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
@@ -306,8 +306,8 @@ ROM              0x08000000         0x00008000         xr
 
 Linker script and memory map
 
-LOAD src/core/system.o
 LOAD src/bootloader.o
+LOAD ../shared/src/core/system.o
 LOAD startup.o
 LOAD ../libopencm3/lib\libopencm3_stm32f4.a
 START GROUP
@@ -325,12 +325,12 @@ END GROUP
 .text           0x08000040      0x540
                 0x08000040                        . = ALIGN (0x4)
  *(.text)
- .text          0x08000040       0x84 src/core/system.o
-                0x08000040                sys_tick_handler
-                0x08000098                system_get_ticks
-                0x080000b4                system_setup
- .text          0x080000c4       0x34 src/bootloader.o
-                0x080000e8                main
+ .text          0x08000040       0x34 src/bootloader.o
+                0x08000064                main
+ .text          0x08000074       0x84 ../shared/src/core/system.o
+                0x08000074                sys_tick_handler
+                0x080000cc                system_get_ticks
+                0x080000e8                system_setup
  .text          0x080000f8       0x64 startup.o
                 0x080000f8                Default_Handler
                 0x08000100                Reset_Handler
@@ -419,7 +419,7 @@ END GROUP
  .v4_bx         0x08000580        0x0 linker stubs
 
 .iplt           0x08000580        0x0
- .iplt          0x08000580        0x0 src/core/system.o
+ .iplt          0x08000580        0x0 ../shared/src/core/system.o
 
 .rodata         0x08000580       0x70
                 0x08000580                        . = ALIGN (0x4)
@@ -432,7 +432,7 @@ END GROUP
                 0x080005f0                        _sidata = LOADADDR (.data)
 
 .rel.dyn        0x080005f0        0x0
- .rel.iplt      0x080005f0        0x0 src/core/system.o
+ .rel.iplt      0x080005f0        0x0 ../shared/src/core/system.o
 
 .data           0x20000000        0xc load address 0x080005f0
                 0x20000000                        . = ALIGN (0x4)
@@ -452,14 +452,14 @@ END GROUP
                 0x2000000c                        _edata = .
 
 .igot.plt       0x2000000c        0x0 load address 0x080005fc
- .igot.plt      0x2000000c        0x0 src/core/system.o
+ .igot.plt      0x2000000c        0x0 ../shared/src/core/system.o
 
 .bss            0x20000010        0x8 load address 0x080005fc
                 0x20000010                        . = ALIGN (0x4)
                 0x20000010                        _sbss = .
                 0x20000010                        __bss_start__ = _sbss
  *(.bss)
- .bss           0x20000010        0x8 src/core/system.o
+ .bss           0x20000010        0x8 ../shared/src/core/system.o
  *(.bss*)
  *(COMMON)
                 0x20000018                        . = ALIGN (0x4)
@@ -470,8 +470,8 @@ OUTPUT(bootloader.elf elf32-littlearm)
 LOAD linker stubs
 
 .debug_info     0x00000000     0x2329
- .debug_info    0x00000000      0x2c8 src/core/system.o
- .debug_info    0x000002c8       0xf3 src/bootloader.o
+ .debug_info    0x00000000       0xf3 src/bootloader.o
+ .debug_info    0x000000f3      0x2c8 ../shared/src/core/system.o
  .debug_info    0x000003bb      0x14f startup.o
  .debug_info    0x0000050a      0xfa1 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
  .debug_info    0x000014ab      0x28f ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
@@ -481,8 +481,8 @@ LOAD linker stubs
  .debug_info    0x000019f7      0x932 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
 
 .debug_abbrev   0x00000000      0xa44
- .debug_abbrev  0x00000000      0x18a src/core/system.o
- .debug_abbrev  0x0000018a       0x90 src/bootloader.o
+ .debug_abbrev  0x00000000       0x90 src/bootloader.o
+ .debug_abbrev  0x00000090      0x18a ../shared/src/core/system.o
  .debug_abbrev  0x0000021a       0xfa startup.o
  .debug_abbrev  0x00000314      0x2da ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
  .debug_abbrev  0x000005ee      0x14e ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
@@ -493,9 +493,9 @@ LOAD linker stubs
 
 .debug_aranges  0x00000000      0x308
  .debug_aranges
-                0x00000000       0x20 src/core/system.o
+                0x00000000       0x20 src/bootloader.o
  .debug_aranges
-                0x00000020       0x20 src/bootloader.o
+                0x00000020       0x20 ../shared/src/core/system.o
  .debug_aranges
                 0x00000040       0x20 startup.o
  .debug_aranges
@@ -512,8 +512,8 @@ LOAD linker stubs
                 0x00000288       0x80 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
 
 .debug_line     0x00000000     0x23bb
- .debug_line    0x00000000      0x1b9 src/core/system.o
- .debug_line    0x000001b9      0x139 src/bootloader.o
+ .debug_line    0x00000000      0x139 src/bootloader.o
+ .debug_line    0x00000139      0x1b9 ../shared/src/core/system.o
  .debug_line    0x000002f2      0x143 startup.o
  .debug_line    0x00000435      0xb5a ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
  .debug_line    0x00000f8f      0x418 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
@@ -522,22 +522,22 @@ LOAD linker stubs
  .debug_line    0x00001ba0      0x32d ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
  .debug_line    0x00001ecd      0x4ee ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
 
-.debug_str      0x00000000     0xab32
- .debug_str     0x00000000     0xab32 src/core/system.o
-                                0x365 (size before relaxing)
- .debug_str     0x0000ab32      0x182 src/bootloader.o
- .debug_str     0x0000ab32      0x1a3 startup.o
- .debug_str     0x0000ab32     0xa335 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
- .debug_str     0x0000ab32     0x4619 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
- .debug_str     0x0000ab32     0x5a58 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
- .debug_str     0x0000ab32     0x5a7a ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
- .debug_str     0x0000ab32     0x56d4 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
- .debug_str     0x0000ab32     0x9ac0 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
+.debug_str      0x00000000     0xab55
+ .debug_str     0x00000000     0xab55 src/bootloader.o
+                                0x182 (size before relaxing)
+ .debug_str     0x0000ab55      0x35e ../shared/src/core/system.o
+ .debug_str     0x0000ab55      0x1a3 startup.o
+ .debug_str     0x0000ab55     0xa335 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
+ .debug_str     0x0000ab55     0x4619 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
+ .debug_str     0x0000ab55     0x5a58 ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_all.o)
+ .debug_str     0x0000ab55     0x5a7a ../libopencm3/lib\libopencm3_stm32f4.a(flash_common_idcache.o)
+ .debug_str     0x0000ab55     0x56d4 ../libopencm3/lib\libopencm3_stm32f4.a(pwr.o)
+ .debug_str     0x0000ab55     0x9ac0 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
 
 .comment        0x00000000       0x45
- .comment       0x00000000       0x45 src/core/system.o
+ .comment       0x00000000       0x45 src/bootloader.o
                                  0x46 (size before relaxing)
- .comment       0x00000045       0x46 src/bootloader.o
+ .comment       0x00000045       0x46 ../shared/src/core/system.o
  .comment       0x00000045       0x46 startup.o
  .comment       0x00000045       0x46 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
  .comment       0x00000045       0x46 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)
@@ -549,9 +549,9 @@ LOAD linker stubs
 .ARM.attributes
                 0x00000000       0x34
  .ARM.attributes
-                0x00000000       0x34 src/core/system.o
+                0x00000000       0x34 src/bootloader.o
  .ARM.attributes
-                0x00000034       0x34 src/bootloader.o
+                0x00000034       0x34 ../shared/src/core/system.o
  .ARM.attributes
                 0x00000068       0x34 startup.o
  .ARM.attributes
@@ -568,8 +568,8 @@ LOAD linker stubs
                 0x000001a0       0x34 ../libopencm3/lib\libopencm3_stm32f4.a(rcc_common_all.o)
 
 .debug_frame    0x00000000      0x608
- .debug_frame   0x00000000       0xa4 src/core/system.o
- .debug_frame   0x000000a4       0x50 src/bootloader.o
+ .debug_frame   0x00000000       0x50 src/bootloader.o
+ .debug_frame   0x00000050       0xa4 ../shared/src/core/system.o
  .debug_frame   0x000000f4       0x48 startup.o
  .debug_frame   0x0000013c      0x234 ../libopencm3/lib\libopencm3_stm32f4.a(rcc.o)
  .debug_frame   0x00000370       0xd8 ../libopencm3/lib\libopencm3_stm32f4.a(systick.o)

@@ -21,7 +21,7 @@ src/main.o: src/main.c ../libopencm3/include/libopencm3/stm32/gpio.h \
  ../libopencm3/include/libopencm3/stm32/f4/pwr.h \
  ../libopencm3/include/libopencm3/stm32/common/pwr_common_v1.h \
  ../libopencm3/include/libopencm3/stm32/common/rcc_common_all.h \
- ../libopencm3/include/libopencm3/cm3/scb.h inc/core/system.h \
+ ../libopencm3/include/libopencm3/cm3/scb.h ../shared/inc/core/system.h \
  inc/common-defines.h ../libopencm3/include/libopencm3/usb/usbd.h \
  ../libopencm3/include/libopencm3/usb/usbstd.h \
  ../libopencm3/include/libopencm3/usb/cdc.h \
@@ -54,7 +54,7 @@ C:/Program\ Files\ (x86)/Arm\ GNU\ Toolchain\ arm-none-eabi/14.2\ rel1/lib/gcc/a
 ../libopencm3/include/libopencm3/stm32/common/pwr_common_v1.h:
 ../libopencm3/include/libopencm3/stm32/common/rcc_common_all.h:
 ../libopencm3/include/libopencm3/cm3/scb.h:
-inc/core/system.h:
+../shared/inc/core/system.h:
 inc/common-defines.h:
 ../libopencm3/include/libopencm3/usb/usbd.h:
 ../libopencm3/include/libopencm3/usb/usbstd.h:
