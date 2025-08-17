@@ -39,28 +39,32 @@ int main(void)
  
     uint64_t start_time = system_get_ticks();
     
-  
     
     while(1)
     {
-     
-      if(system_get_ticks()-start_time>=5000)
+       
+
+
+      if(system_get_ticks()-start_time>=200)
         {
         gpio_toggle(GPIOC, GPIO13);
+        
         start_time=system_get_ticks();
+
+        uart_write_byte('s');
         }
 
         if(uart_data_available()){
+           // gpio_toggle(GPIOC, GPIO13);
             uint8_t data = uart_read_byte();
-            uart_write_byte(data+1);
-        
+            uart_write_byte(data);
         }
 
     }
 
     return 0;
 }
-/*
+/*s
 int main(void) {
     rcc_periph_clock_enable(RCC_GPIOC);
     gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO13);

@@ -25,7 +25,13 @@
  ../libopencm3/include/libopencm3/cm3/nvic.h \
  ../libopencm3/include/libopencm3/dispatch/nvic.h \
  ../libopencm3/include/libopencm3/stm32/f4/nvic.h \
- ../shared/inc/core/uart.h inc/common-defines.h
+ ../shared/inc/core/uart.h inc/common-defines.h \
+ ../shared/inc/core/ring-buffer.h \
+ ../libopencm3/include/libopencm3/stm32/gpio.h \
+ ../libopencm3/include/libopencm3/stm32/f4/gpio.h \
+ ../libopencm3/include/libopencm3/stm32/common/gpio_common_f24.h \
+ ../libopencm3/include/libopencm3/stm32/common/gpio_common_f234.h \
+ ../libopencm3/include/libopencm3/stm32/common/gpio_common_all.h
 ../libopencm3/include/libopencm3/stm32/rcc.h:
 ../libopencm3/include/libopencm3/cm3/common.h:
 C:/Program\ Files\ (x86)/Arm\ GNU\ Toolchain\ arm-none-eabi/14.2\ rel1/lib/gcc/arm-none-eabi/14.2.1/include/stdint.h:
@@ -54,3 +60,9 @@ C:/Program\ Files\ (x86)/Arm\ GNU\ Toolchain\ arm-none-eabi/14.2\ rel1/lib/gcc/a
 ../libopencm3/include/libopencm3/stm32/f4/nvic.h:
 ../shared/inc/core/uart.h:
 inc/common-defines.h:
+../shared/inc/core/ring-buffer.h:
+../libopencm3/include/libopencm3/stm32/gpio.h:
+../libopencm3/include/libopencm3/stm32/f4/gpio.h:
+../libopencm3/include/libopencm3/stm32/common/gpio_common_f24.h:
+../libopencm3/include/libopencm3/stm32/common/gpio_common_f234.h:
+../libopencm3/include/libopencm3/stm32/common/gpio_common_all.h:
