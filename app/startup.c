@@ -5,6 +5,11 @@ extern int main(void);
 void Reset_Handler(void);
 void sys_tick_handler(void);
 void Default_Handler(void);
+
+void vPortSVCHandler(void);
+void xPortPendSVHandler(void);
+void xPortSysTickHandler(void);
+
 //void usart2_isr(void);
 void usart2_isr(void);
 
@@ -16,10 +21,10 @@ extern uint32_t _sbss;           // Start of .bss section in RAM (you need to de
 extern uint32_t _ebss;           // End of .bss section in RAM
 extern uint32_t _stack;          // Initial stack pointer
 
-/* Vector table in .isr_vector section */
+/* Vector table */
 __attribute__((section(".isr_vector")))
 void (* const vector_table[])(void) = {
-    (void (*)(void))(&_stack),  // Stack pointer
+    (void (*)(void))(&_stack),  // Initial stack pointer
     Reset_Handler,              // Reset
     Default_Handler,            // NMI
     Default_Handler,            // HardFault
@@ -27,11 +32,12 @@ void (* const vector_table[])(void) = {
     Default_Handler,            // BusFault
     Default_Handler,            // UsageFault
     0,0,0,0,                    // Reserved
-    Default_Handler,            // SVCall
+    vPortSVCHandler,            // SVCall (FreeRTOS)
     Default_Handler,            // DebugMonitor
-    0,                           // Reserved
-    Default_Handler,            // PendSV
-    sys_tick_handler,            // SysTick
+    0,                          // Reserved
+    xPortPendSVHandler,         // PendSV (FreeRTOS)
+    xPortSysTickHandler,        // SysTick (FreeRTOS)
+    /* External interrupts */
     Default_Handler,            // WWDG
     Default_Handler,            // PVD
     Default_Handler,            // TAMP_STAMP
@@ -70,10 +76,10 @@ void (* const vector_table[])(void) = {
     Default_Handler,            // SPI1
     Default_Handler,            // SPI2
     Default_Handler,            // USART1
-    usart2_isr,                // USART2 <-- here!
+    usart2_isr,                 // USART2 <-- your ISR
     Default_Handler,            // USART3
+    // add more if you need (check RM for STM32F4)
 };
-
 
 /* Default handler implementation */
 void Default_Handler(void) {

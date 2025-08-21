@@ -1,6 +1,7 @@
 PROJECT = app
 CHIP = stm32f4
 OPENCM3_DIR = ../libopencm3
+FREERTOS_DIR = ../FreeRTOS-Kernel
 
 # Output files
 BINARY = $(PROJECT).elf
@@ -20,7 +21,18 @@ $(wildcard $(SHARED_SRCDIR)/**/*.c) $(wildcard $(SHARED_SRCDIR)/*.c)
 S_SRCS = $(wildcard $(SRCDIR)/**/*.S) $(wildcard $(SRCDIR)/*.S) \
 $(wildcard $(SHARED_SRCDIR)/**/*.S) $(wildcard $(SHARED_SRCDIR)/*.S)
 STARTUP = startup.c
-SRC = $(C_SRCS) $(S_SRCS) $(STARTUP)
+
+FREERTOS_SRCS = \
+    $(FREERTOS_DIR)/tasks.c \
+    $(FREERTOS_DIR)/queue.c \
+    $(FREERTOS_DIR)/list.c \
+    $(FREERTOS_DIR)/timers.c \
+    $(FREERTOS_DIR)/event_groups.c \
+    $(FREERTOS_DIR)/stream_buffer.c \
+    $(FREERTOS_DIR)/portable/GCC/ARM_CM4F/port.c \
+    $(FREERTOS_DIR)/portable/MemMang/heap_4.c
+
+SRC = $(C_SRCS) $(S_SRCS) $(STARTUP) $(FREERTOS_SRCS)
 OBJS = $(SRC:.c=.o)
 OBJS := $(OBJS:.S=.o)
 
@@ -31,6 +43,8 @@ CFLAGS = -g -O0 -Wall -Wextra \
          -I$(OPENCM3_DIR)/include \
          -I$(INCDIR) -I$(INCDIR)/core \
          -I$(SHARED_INCDIR) -I$(SHARED_INCDIR)/core \
+         -I$(FREERTOS_DIR)/include \
+         -I$(FREERTOS_DIR)/portable/GCC/ARM_CM4F \
          -mcpu=cortex-m4 -mthumb -nostdlib -MD -MP \
          -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F4 \
          -Isrc/core
